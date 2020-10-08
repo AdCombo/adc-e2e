@@ -15,6 +15,14 @@ class Config(BaseConfig):
     ENV_KEY_PREFIX = 'test'
 
     # base configurations for applications
+    # Something like this
+    # 'test_app': {
+    #     'base_url': 'http://application_url.com',
+    #     'page_loader_css_class': 'pageLoaderClass',
+    #     'table_loader_css_class': 'tableLoaderClass',
+    #     'modal_visible_css_class': 'custom modal class',
+    #     'has_page_ready_script': True,  # need to check window.e2e_ready attribute
+    # },
     BASE_APP_CONFIG = {
     }
 

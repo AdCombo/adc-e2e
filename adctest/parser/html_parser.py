@@ -1,5 +1,4 @@
 import logging
-import re
 from copy import deepcopy
 from pathlib import Path
 from typing import List, Optional, Dict, Tuple
@@ -12,7 +11,7 @@ from adctest.parser.const import (
     RAW_PAGE_PATH_NAME,
 )
 from adctest.parser.exceptions import ParserException
-from hasoffers.e2e.pages import BasePage, BasePageMeta, BaseNavigation, BaseNavigationMeta, ElementDescriptor, \
+from adctest.pages import BasePage, BasePageMeta, BaseNavigation, BaseNavigationMeta, ElementDescriptor, \
     WebElementProxy
 from adctest.parser.utils import Utils, RelativeImportPath, LineRange
 from lxml.etree import XMLSyntaxError
@@ -130,8 +129,8 @@ class AngularFormatParser:
     """абсолютный путь до /backend, генерится в рантайме"""
     project_path: Path = None
     """абсолютный путь до root_path, генерится в рантайме"""
-    relative_e2e_path: Path = Path('py/tests/hasoffers/e2e/')
-    """относительный путь до e2e папки"""
+    relative_e2e_path: Path = None
+    """относительный путь до папки, куда складывать pages и raw_pages"""
     e2e_path: Path = None
     """абсолютный путь до e2e папки, генерится в рантайме"""
     pages_path: Path = None
@@ -156,7 +155,10 @@ class AngularFormatParser:
     def _set_project_paths(cls) -> None:
         if not cls.root_path:
             raise NotImplementedError('root_path attr must be set to subclass')
+        if not cls.relative_e2e_path:
+            raise NotImplementedError('relative_e2e_path attr must be set to subclass')
 
+        # todo move to subclass implementation
         cls.backend_path = Utils.get_full_path_to_backend()
         cls.e2e_path = cls.backend_path.joinpath(cls.relative_e2e_path)
         cls.project_path = cls.backend_path.joinpath(cls.root_path)
